@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#fdf8f1">
+<title>お掃除は化学ドリル</title>
+<style>
+:root{
+  --bg:#fdf8f1; --surface:#fffefa; --surface2:#faf5ec; --ink:#4d4a42; --muted:#96907f; --line:#eee3d3;
+  --accent:#ffcf87; --accent-ink:#7a5410; --teal:#79b8a9; --teal-dark:#4c8a7c; --good:#6fae7e; --bad:#dd8a7c;
+  --acid-bg:#fad9cd; --acid-ink:#a34a35;
+  --neutral-bg:#cdeeda; --neutral-ink:#2f7046;
+  --wal-bg:#cdeaf2; --wal-ink:#2c6a82;
+  --alk-bg:#ccd9f5; --alk-ink:#3a579c;
+  --cl-bg:#e0d4f5; --cl-ink:#64459c;
+  --oxy-bg:#fbe7bd; --oxy-ink:#8f620d;
+  --shadow:0 6px 20px rgba(160,130,90,.10);
+  --font:"Hiragino Maru Gothic ProN","Hiragino Sans","Yu Gothic","Meiryo","Noto Sans JP",sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:linear-gradient(180deg,#fdf8f1 0%,#f3f8f2 100%);background-attachment:fixed;color:var(--ink);font-family:var(--font);font-size:18px;line-height:1.65;
+  -webkit-text-size-adjust:100%;padding:env(safe-area-inset-top,0) max(16px,env(safe-area-inset-right,0)) 0 max(16px,env(safe-area-inset-left,0))}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.wrap{max-width:640px;margin:0 auto;padding:20px 0 120px}
+h1{font-size:29px;margin:10px 0 6px;letter-spacing:.03em;font-weight:800}
+h1 b{color:var(--teal-dark);border-bottom:6px solid #ffe3ae;border-radius:3px;padding:0 2px}
+.lead{color:var(--muted);font-size:15px;margin:0 0 18px}
+.ph{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:22px}
+.ph div{padding:8px 6px;font-weight:700;font-size:15px;text-align:center;border-radius:99px}
+.c-acid{background:var(--acid-bg);color:var(--acid-ink)}.c-neutral{background:var(--neutral-bg);color:var(--neutral-ink)}
+.c-wal{background:var(--wal-bg);color:var(--wal-ink)}.c-alk{background:var(--alk-bg);color:var(--alk-ink)}
+.c-cl{background:var(--cl-bg);color:var(--cl-ink)}.c-oxy{background:var(--oxy-bg);color:var(--oxy-ink)}
+.startbtn{display:block;width:100%;border:0;border-radius:24px;padding:22px 20px;margin-bottom:12px;text-align:left;box-shadow:var(--shadow)}
+.startbtn b{display:block;font-size:24px}
+.startbtn span{font-size:15px;opacity:.85}
+.s1{background:linear-gradient(135deg,#ffe3ae,#ffd9a3);color:#6d4c0d}
+.note{font-size:14px;color:var(--muted)}
+/* play */
+.topbar{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.home{background:var(--surface);border:1px solid var(--line);border-radius:99px;padding:5px 16px;font-size:15px;box-shadow:var(--shadow)}
+.count{margin-left:auto;font-size:15px;color:var(--muted)}
+.count b{color:var(--good);font-size:18px}
+.bar{height:10px;border-radius:99px;background:#efe7da;overflow:hidden;margin-bottom:16px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#a8d8c8,var(--teal));border-radius:99px;transition:width .3s}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:28px;padding:20px 16px;text-align:center;box-shadow:var(--shadow)}
+.place{display:inline-block;font-size:14px;font-weight:700;padding:3px 14px;border-radius:99px;background:var(--surface2);border:1px solid var(--line);color:var(--muted)}
+.qimg{width:100%;height:auto;display:block;border-radius:18px;margin-top:14px}
+.ask{font-size:15px;color:var(--muted);margin-top:12px}
+.x{font-size:27px;font-weight:800;line-height:1.4;margin:4px 0 6px;word-break:break-word}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.choices button{border:0;border-radius:18px;min-height:70px;padding:10px;font-size:22px;font-weight:800;transition:opacity .15s,transform .1s;box-shadow:0 3px 8px rgba(160,130,90,.10)}
+.choices button:active{transform:scale(.97)}
+.choices button[disabled]{opacity:.35;cursor:default}
+.choices button.hit{opacity:1;outline:4px solid var(--teal-dark);outline-offset:2px}
+.fb{margin-top:16px;border-radius:18px;padding:14px 16px;background:var(--surface2);border:1px dashed var(--line);text-align:left}
+.v{font-size:22px;font-weight:800}
+.v.ok{color:var(--good)}.v.ng{color:var(--bad)}
+.why{margin:4px 0 0;font-size:17px}
+.chain{margin:6px 0 0;font-size:14px;color:var(--muted)}
+.next{display:block;width:100%;margin-top:14px;border:0;border-radius:18px;padding:16px;background:var(--teal);color:#fff;font-size:20px;font-weight:800;box-shadow:var(--shadow)}
+/* result */
+.score{background:var(--surface);border:1px solid var(--line);border-radius:28px;padding:24px 20px;text-align:center;box-shadow:var(--shadow)}
+.big{font-size:60px;font-weight:800;line-height:1.1}
+.big small{font-size:24px;color:var(--muted)}
+.rv{background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--bad);border-radius:16px;padding:12px 14px;margin-top:10px}
+.rv h3{margin:0;font-size:17px}
+.rv .thumb{width:80px;height:80px;object-fit:cover;border-radius:12px;float:left;margin:0 10px 4px 0}
+.rv::after{content:"";display:block;clear:both}
+.rv .meta{font-size:13px;color:var(--muted)}
+.pill{display:inline-block;font-size:14px;font-weight:700;padding:1px 12px;border-radius:99px;margin-right:4px}
+.rv p{margin:4px 0 0;font-size:15px}
+h2{font-size:20px;margin:24px 0 4px}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.btns button{border:0;border-radius:18px;padding:15px;font-size:18px;font-weight:800}
+.btns .again{background:linear-gradient(135deg,#ffe3ae,#ffd9a3);color:#6d4c0d;box-shadow:var(--shadow)}
+.btns .back{background:var(--surface);border:1px solid var(--line)}
+/* safety */
+.safety{position:fixed;left:0;right:0;bottom:0;background:#fff6e3;border-top:2px solid var(--accent);color:#6d5a26;
+  font-size:12.5px;line-height:1.5;text-align:center;padding:6px max(12px,env(safe-area-inset-right,0)) calc(6px + env(safe-area-inset-bottom,0)) max(12px,env(safe-area-inset-left,0))}
+.safety b{color:var(--bad)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<div class="safety"><b>⚠ 酸性の洗剤と塩素系の洗剤は絶対に混ぜないでください（有毒ガスが出ます）。</b>塩素系を使うときは換気・ゴム手袋・マスクを。</div>
+<script>
+const Q=[
+[1,"お掃除の化学","油汚れ",["alk"],0,"食用油・皮脂（脂肪酸）","酸性の汚れ","この汚れは酸性。だから、逆の性質のアルカリで中和します。 酸性の汚れはアルカリで中和。アルカリが油を分解して水に溶けやすくする。熱にも弱い。","油汚れ→アルカリ洗剤。"],
+[2,"お掃除の化学","カビ汚れ",["cl"],0,"カビ（根を張る微生物）","生き物","これは中和で落とす汚れではなく、生き物（カビ）。だから塩素系で殺菌・漂白します。 酸・アルカリで中和して落とす汚れではない。塩素系で殺菌・漂白する。","カビ汚れ→塩素系洗剤。"],
+[3,"お掃除の化学","水垢汚れ",["acid"],0,"水道水のカルシウム・マグネシウムが乾いて固まったもの","アルカリ性の汚れ","この汚れはアルカリ性。だから、逆の性質の酸性で溶かします。 アルカリ性のミネラルの塊なので、酸で中和して溶かす。アルカリ洗剤では反応しない。","水垢汚れ→酸性洗剤。"],
+[4,"お掃除の化学","軽度な汚れ",["neutral"],0,"ほこり・軽い皮脂など","ほぼ中性","軽い汚れなので、強い洗剤はいりません。中性で十分です。 中和するほどの汚れではない。中性洗剤の界面活性剤で浮かせれば十分で、素材も傷めない。","軽度な汚れ→中性洗剤。"],
+[5,"お掃除の化学","弱い酸性の汚れ（ドアノブの手垢など）",["wal","neutral"],0,"手の皮脂・汗","弱い酸性の汚れ","この汚れは弱い酸性。だから弱アルカリで穏やかに中和します。軽ければ中性でも大丈夫です。 弱い酸性なので弱アルカリで穏やかに中和。軽ければ中性の食器用洗剤でも代用できる。","弱アルカリ洗剤。軽度なら食器洗い洗剤（中性）でも代用OK。"],
+[6,"トイレ","トイレの尿石・黄ばみ",["acid"],0,"尿のカルシウム分などが固まったもの","アルカリ性（水垢の一種）","この汚れはアルカリ性（水垢の仲間）。だから、逆の性質の酸性で溶かします。 アルカリ性の塊なので酸性洗剤で中和して溶かす。塩素系と同時に使うのは厳禁。","水垢の一種でアルカリ性の汚れ→酸性。"],
+[7,"浴室","金属石鹸（白い・蛇口や鏡）",["acid"],0,"石鹸の油脂＋水道水のミネラル（カルシウム）","ミネラル由来・アルカリ寄り","この汚れはミネラル由来でアルカリ寄り。だから酸性で溶かします。 水道水のミネラルと結び付いた汚れなので、水垢と同じく酸性洗剤で溶かす。","油脂＋水道水のミネラル→酸性洗剤。"],
+[8,"浴室","酸性石鹸（黒っぽくべたべた・タイルの溝）",["alk"],0,"石鹸の油脂＋体から出る皮脂","酸性の汚れ","この汚れは酸性。だから、逆の性質のアルカリで中和します。 皮脂由来の酸性汚れなのでアルカリで中和。アルカリ洗剤がよく反応する。","油脂＋皮脂→アルカリ洗剤。"],
+[9,"キッチン","ガスコンロの長年の油汚れ",["alk"],0,"長年の油が酸化して固まったもの","酸性の汚れ","この汚れは酸性。だから、逆の性質のアルカリで中和します。 アルカリで中和。固いのでスクレーパーで傷をつけて浸透させ、浸け置きで時間をかける。","ガラススクレーパーで削ってアルカリ洗剤に漬け置き。"],
+[10,"キッチン","五徳のコゲ",["alk"],0,"油や食品が熱で焦げ固まったもの","酸性の油汚れの延長","このコゲは酸性の油汚れの仲間。だからアルカリで中和します。 アルカリ＋熱（沸騰したお湯）＋時間（一晩）。コゲは熱に弱い。","沸騰させたお湯にアルカリ洗剤で一晩。"],
+[11,"キッチン","ステンレスシンクの水垢",["acid"],0,"水道水のミネラルの塊","アルカリ性の汚れ","この汚れはアルカリ性。だから、逆の性質の酸性で溶かします。 酸で溶かす。ただしステンレスは酸を長く置くと焼けて変色するので10秒ほどで流す。","刷毛で塗って10秒ほどで流す。"],
+[12,"キッチン","シンク掃除の最後の中和",["alk"],0,"シンクに残った酸性洗剤","酸性","残っているのは酸性の洗剤。だからアルカリで中和して終えます。 残った酸はサビの原因。アルカリ洗剤をかけて中和して終える。","酸性洗剤が残るとサビの原因。"],
+[13,"キッチン","シンクの毎日の手入れ",["neutral"],0,"食べかす・軽い油","軽い汚れ","軽い汚れなので、強い洗剤はいりません。中性で十分です。 中性洗剤で十分。最後に乾拭きして、水垢の元になる水滴を残さない。","中性洗剤で洗って必ず乾拭き。"],
+[14,"キッチン","冷蔵庫ゴムパッキンのカビ",["cl"],0,"カビ","生き物","これは中和で落とす汚れではなく、生き物（カビ）。だから塩素系で殺菌・漂白します。 カビなので塩素系で殺菌・漂白。冷蔵庫用カビ取り剤は無いので、トイレ用の塩素系洗剤を使う。","塩素系洗剤を使う。要手袋。"],
+[15,"キッチン","冷蔵庫の中の拭き掃除",["neutral"],0,"湿気で柔らかくなった軽い汚れ","軽い汚れ","軽い汚れなので、強い洗剤はいりません。中性で十分です。 年中湿気があり汚れが柔らかいので、中性洗剤を含ませたタオルでほぼ完結。","タオルに中性洗剤を数滴。"],
+[16,"キッチン","使った直後の魚焼きグリル",["neutral"],0,"まだ固まっていない油","軽い汚れ","まだ固まっていない軽い油汚れ。だから中性で十分です。 油は時間がたつと熱や光で酸化して固くなる。固まる前なら中性洗剤で落ちる。","すぐなら中性洗剤で軽くこするだけ。"],
+[17,"キッチン","レンジフードの外側",["neutral"],0,"軽い油・ほこり（塗装面）","軽い汚れ","軽い汚れなので、強い洗剤はいりません。中性で十分です。 外側は塗装が傷付きやすい。強い洗剤ではなく、中性洗剤と柔らかいスポンジで時間をかける。","傷が付きやすいので中性洗剤と柔らかいスポンジ。"],
+[18,"キッチン","取り外せる食洗機パーツの水垢",["acid"],0,"水道水のミネラルの塊","アルカリ性の汚れ","この汚れはアルカリ性。だから、逆の性質の酸性で溶かします。 溝や角の白い汚れは水垢。酸性洗剤で溶かす。","いつも使う酸性洗剤で。"],
+[19,"浴室","浴室扉の外側（脱衣所側）",["neutral"],0,"ほこり・手垢（アクリル面）","軽い汚れ","軽い汚れなので、強い洗剤はいりません。中性で十分です。 脱衣所側は水垢が少なく、アクリルは傷付きやすい。中性洗剤と柔らかいスポンジで。","中性洗剤と柔らかいスポンジ。"],
+[20,"浴室","浴室扉下のカリカリ部分",["acid"],0,"水垢（ミネラル）が厚く固まったもの","アルカリ性の汚れ","この汚れはアルカリ性。だから、逆の性質の酸性で溶かします。 酸で溶かす。「ジュワー」は洗剤が浸透している音。何度か繰り返す。","ジュワーと浸透する音がする。"],
+[21,"浴室","浴室換気扇パーツの浸け置き",["cl"],0,"湿気を吸ったほこり・カビ","カビ（生き物）","これは中和で落とす汚れではなく、カビ（生き物）。だから塩素系で殺菌・漂白します。 浴室の湿気でカビが育つ場所。塩素系で殺菌・漂白する。","バケツの水に塩素系をキャップ1杯程度。"],
+[22,"浴室","シャワーホースのカビ",["cl"],0,"柔らかい素材にしみ込んだカビ","生き物","これは中和で落とす汚れではなく、生き物（カビ）。だから塩素系で殺菌します。 塩素系で殺菌。塩素系は乾くとただの塩分になるので、ラップで湿らせたまま時間を稼ぐ。","塗ってキッチンペーパー＋サランラップ。"],
+[23,"浴室","バスタブのウロコ状の水垢",["acid"],0,"水道水のミネラルが何度も乾いて積み重なったもの","アルカリ性の汚れ","この汚れはアルカリ性。だから、逆の性質の酸性で溶かします。 酸で中和して溶かす。層になっているので時間をかける。","時間をかけてやる方がいい。"],
+[24,"洗面所","洗面所の鏡",["neutral"],0,"水はね・手垢などの軽い汚れ","軽い汚れ","軽い汚れなので、強い洗剤はいりません。中性で十分です。 洗面所の鏡は浴室と材質が違い、頑固な水垢も少ない。中性洗剤とマイクロファイバーで。","マイクロファイバー＋中性洗剤。"],
+[25,"洗面所","洗面ボウルのがんこな水垢",["acid"],0,"水道水のミネラルの塊","アルカリ性の汚れ","この汚れはアルカリ性。だから、逆の性質の酸性で溶かします。 酸で溶かしながら、ラストラーレスポンジで研磨も加える。","ラストラーレスポンジに酸性洗剤。"],
+[26,"洗面所","洗面所の蛇口",["neutral"],0,"少しの水垢・石鹸カス","軽い汚れ","軽い汚れなので、強い洗剤はいりません。中性で十分です。 汚れは少なく、蛇口は傷付きやすい。中性洗剤で軽くなでる程度で十分。","ラストラーに中性洗剤で軽くなでる。"],
+[27,"洗面所","洗面所の排水口",["acid"],0,"水垢・石鹸カス（髪の毛は先に除去）","ミネラル由来の汚れ","この汚れはミネラル由来（水垢の仲間）。だから酸性で溶かします。 ピンセットで髪の毛を取ってから、酸性洗剤とラストラーで磨く。","髪の毛を取ってラストラー＋酸性洗剤。"],
+[28,"トイレ","便座の拭き上げ",["neutral","wal"],0,"軽い汚れ（陶器・親水性）","軽い汚れ","軽い汚れなので、強い洗剤はいりません。中性か弱アルカリで十分です。 陶器は水となじみやすく汚れが浮きやすい。中性か弱アルカリで十分。","中性洗剤か弱アルカリ洗剤。"],
+[29,"トイレ","便座クッションの浸け置き",["cl"],0,"尿の飛び散り・雑菌・カビ","菌・カビ","これは菌やカビの仕業。だから塩素系で除菌します。 臭いの元は菌やカビ。塩素系に浸け置きして除菌する。","臭いの原因。外して塩素系へ。"],
+[30,"トイレ","さぼったリングのカビ",["cl"],0,"水面のふちに育ったカビ","生き物","これは中和で落とす汚れではなく、生き物（カビ）。だから塩素系で落とします。 カビなので塩素系。水を抜いて直接塗り、30分置いて浸透させる。","水を抜いて塗り、30分放置。"],
+[31,"トイレ","トイレの壁・床（臭いなし）",["wal","neutral"],0,"軽い尿はね・ほこり","軽い汚れ","軽い汚れなので、強い洗剤はいりません。弱アルカリか中性で十分です。 軽い汚れは弱アルカリか中性で拭く。臭いがある時は菌対策で塩素系に切り替える。","弱アルカリ洗剤か中性洗剤。臭いがあれば塩素系。"],
+[32,"リビング","天井・壁・照明・ドア",["neutral"],0,"ほこり・手垢","軽い汚れ","軽い汚れなので、強い洗剤はいりません。中性で十分です。 家の大部分の汚れは軽い。素材を傷めない中性洗剤を薄めて拭くのが基本。","バケツの水に中性洗剤を数滴。"],
+[33,"リビング","窓のゴムパッキンのカビ",["cl"],0,"結露の水分で育ったカビ","生き物","これは中和で落とす汚れではなく、生き物（カビ）。だから塩素系で殺菌・漂白します。 カビなので塩素系で殺菌・漂白。換気と手袋を忘れずに。","刷毛で塗る。手袋・換気必須。"],
+[34,"リビング","ソファー",["oxy"],0,"繊維にしみた皮脂・汚れ・臭い","布の汚れ","布の汚れには、繊維を傷めにくい酸素系が向いています。 酸素系漂白剤は繊維を傷めにくく、除菌・消臭もできる。","液体タイプの酸素系漂白剤がおすすめ。"],
+[35,"リビング","色物のカーテン",["oxy"],0,"布の汚れ（色は残したい）","布の汚れ","色物なので、色まで抜いてしまう塩素系は使えません。だから酸素系で漂白します。 塩素系は色まで抜いてしまう。色物は酸素系で漂白・除菌する。","酸素系漂白剤をキャップ2杯くらい。"],
+[36,"リビング","白いレースのカーテン",["cl"],0,"黄ばみ・カビ","布の汚れ・カビ","白い布なので色落ちの心配がありません。だから漂白力の強い塩素系で大丈夫です。 白なら色落ちの心配がないので、漂白力の強い塩素系でよい。","塩素系をキャップ1杯くらい。"],
+[37,"リビング","エアコンのフィルター水洗い",["neutral"],0,"ほこり","軽い汚れ","軽い汚れなので、強い洗剤はいりません。中性で十分です。 ほこりは中性洗剤で水洗いすれば十分。内部はプロに任せる。","中性洗剤で水洗い。"],
+[38,"玄関・ベランダ","玄関ドア",["neutral"],0,"手垢・ほこり","軽い汚れ","軽い汚れなので、強い洗剤はいりません。中性で十分です。 中性洗剤で拭き上げ。メラミンスポンジは研磨剤入りなので注意。","中性洗剤で拭き上げ。"],
+[39,"玄関・ベランダ","ベランダの強い汚れ（高圧洗浄の後）",["cl"],0,"雨だれの黒ずみ・カビなど","カビ（生き物）を含む汚れ","黒ずみにはカビ（生き物）が含まれています。だから塩素系で殺菌・漂白します。 高圧洗浄で落ちない黒ずみは塩素系で殺菌・漂白し、30分置いてから再び高圧洗浄。","水6：塩素4を刷毛で塗って30分。"]
+];
+// [番号, 場所, 汚れ・場所名, 正解, 予備フラグ(表示には使わない), 正体, 性質, 理由, 補足]
+const CATS={acid:'酸性',neutral:'中性',wal:'弱アルカリ',alk:'アルカリ',cl:'塩素系',oxy:'酸素系'};
+const KEYS=Object.keys(CATS);
+const app=document.getElementById('app');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const pills=ok=>ok.map(k=>'<span class="pill c-'+k+'">'+CATS[k]+'</span>').join('');
+const imgPath=n=>'images/web/q'+String(n).padStart(2,'0')+'.jpg';
+let S=null;
+
+function start(){
+  S=null;
+  app.innerHTML='<h1>お掃除は<b>化学</b>ドリル</h1>'+
+  '<p class="lead">洗剤スピード仕分け：汚れや場所を見て、使う洗剤を6種類から選ぼう。全39問です。</p>'+
+  '<div class="ph">'+KEYS.map(k=>'<div class="c-'+k+'">'+CATS[k]+'</div>').join('')+'</div>'+
+  '<button class="startbtn s1" id="bstart"><b>全39問スタート</b><span>汚れや場所を見て、使う洗剤を6種類から選ぼう</span></button>'+
+  '<p class="note">数字キー1〜6でも答えられます（PCの場合）。</p>';
+  document.getElementById('bstart').onclick=()=>play();
+  window.scrollTo(0,0);
+}
+function play(){S={list:shuffle(Q),i:0,ok:0,miss:[],answered:false};show()}
+function show(){
+  if(S.i>=S.list.length)return result();
+  const q=S.list[S.i];S.answered=false;
+  app.innerHTML='<div class="topbar"><button class="home" id="home">← トップ</button>'+
+  '<span class="count">'+(S.i+1)+' / '+S.list.length+'問　正解 <b>'+S.ok+'</b></span></div>'+
+  '<div class="bar"><i style="width:'+(S.i/S.list.length*100)+'%"></i></div>'+
+  '<div class="card"><span class="place">'+esc(q[1])+'</span>'+
+  '<img class="qimg" src="'+imgPath(q[0])+'" alt="'+esc(q[2])+'のイラスト">'+
+  '<div class="ask">この汚れ・場所に使うのは？</div>'+
+  '<div class="x">'+esc(q[2])+'</div>'+
+  '<div class="choices">'+KEYS.map((k,j)=>'<button class="c-'+k+'" data-k="'+k+'">'+CATS[k]+'</button>').join('')+'</div>'+
+  '<div id="fb"></div></div>';
+  document.getElementById('home').onclick=start;
+  const bs=[...app.querySelectorAll('.choices button')];
+  bs.forEach(b=>b.onclick=()=>answer(q,b,bs));
+  window.scrollTo(0,0);
+}
+function answer(q,b,bs){
+  if(S.answered)return;S.answered=true;
+  const ok=q[3].includes(b.dataset.k);
+  if(ok)S.ok++;else S.miss.push(q);
+  bs.forEach(x=>{x.disabled=true;if(q[3].includes(x.dataset.k))x.classList.add('hit')});
+  document.querySelector('.count').innerHTML=(S.i+1)+' / '+S.list.length+'問　正解 <b>'+S.ok+'</b>';
+  document.querySelector('.bar i').style.width=((S.i+1)/S.list.length*100)+'%';
+  document.getElementById('fb').innerHTML='<div class="fb"><div class="v '+(ok?'ok':'ng')+'">'+
+  (ok?'⭕ 正解！':'❌ 不正解　正解は '+q[3].map(k=>CATS[k]).join(' / '))+'</div>'+
+  '<p class="why">'+esc(q[7])+'</p>'+
+  '<p class="chain">汚れの正体：'+esc(q[5])+'　／　性質：'+esc(q[6])+'</p></div>'+
+  '<button class="next" id="next">'+(S.i+1<S.list.length?'次へ':'結果を見る')+'</button>';
+  const nx=document.getElementById('next');
+  nx.onclick=()=>{S.i++;show()};
+  nx.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function result(){
+  const n=S.list.length;
+  app.innerHTML='<h1>結果</h1><div class="score"><div class="big">'+S.ok+'<small> / '+n+'</small></div>'+
+  '<div>'+(S.ok===n?'全問正解！完璧です。':S.ok>=n*0.7?'いい感じ！間違えた所を復習しよう。':'下の復習リストで確認しよう。')+'</div></div>'+
+  (S.miss.length?'<h2>間違えた問題の復習（'+S.miss.length+'問）</h2>'+S.miss.map(q=>
+    '<div class="rv"><img class="thumb" src="'+imgPath(q[0])+'" alt=""><div class="meta">No.'+q[0]+'　'+esc(q[1])+'</div><h3>'+esc(q[2])+'</h3>'+
+    '<div>正解：'+pills(q[3])+'</div><p>'+esc(q[7])+'</p></div>').join(''):'')+
+  '<div class="btns"><button class="again" id="again">もう一度</button><button class="back" id="top">トップへ</button></div>';
+  document.getElementById('again').onclick=()=>play();
+  document.getElementById('top').onclick=start;
+  window.scrollTo(0,0);
+}
+document.addEventListener('keydown',e=>{
+  if(!S||S.i>=S.list.length)return;
+  if(e.key==='Enter'){const nx=document.getElementById('next');if(nx){e.preventDefault();nx.click()}return}
+  const k=parseInt(e.key,10);if(k>=1&&k<=6){const b=app.querySelectorAll('.choices button')[k-1];if(b&&!b.disabled)b.click()}
+});
+start();
+</script>
+</body>
+</html>
