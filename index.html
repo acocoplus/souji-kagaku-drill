@@ -60,7 +60,7 @@ h1 b{color:var(--teal-dark);border-bottom:6px solid #ffe3ae;border-radius:3px;pa
 .v.ok{color:var(--good)}.v.ng{color:var(--bad)}
 .why{margin:4px 0 0;font-size:17px}
 .chain{margin:6px 0 0;font-size:14px;color:var(--muted)}
-.next{display:block;width:100%;margin-top:14px;border:0;border-radius:18px;padding:16px;position:sticky;bottom:72px;z-index:5;background:#3f7d6e;color:#fff;font-size:20px;font-weight:800;box-shadow:var(--shadow)}
+.next{display:block;width:100%;margin-top:14px;border:0;border-radius:18px;padding:16px;background:#3f7d6e;color:#fff;font-size:20px;font-weight:800;box-shadow:var(--shadow)}
 /* result */
 .score{background:var(--surface);border:1px solid var(--line);border-radius:28px;padding:24px 20px;text-align:center;box-shadow:var(--shadow)}
 .big{font-size:60px;font-weight:800;line-height:1.1}
@@ -185,7 +185,7 @@ function answer(q,b,bs){
   '<button class="next" id="next">'+(S.i+1<S.list.length?'次へ':'結果を見る')+'</button>';
   const nx=document.getElementById('next');
   nx.onclick=()=>{S.i++;show()};
-  nx.scrollIntoView({behavior:'smooth',block:'nearest'});
+  setTimeout(()=>window.scrollTo({top:document.documentElement.scrollHeight,behavior:'smooth'}),50);
 }
 function result(){
   const n=S.list.length;
