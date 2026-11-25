@@ -140,7 +140,7 @@ const app=document.getElementById('app');
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const pills=ok=>ok.map(k=>'<span class="pill c-'+k+'">'+CATS[k]+'</span>').join('');
-const imgPath=n=>'images/web/q'+String(n).padStart(2,'0')+'.jpg';
+const imgPath=n=>'images/web/q'+String(n).padStart(2,'0')+'.jpg?v=5';
 let S=null;
 
 function start(){
