@@ -175,7 +175,7 @@ function answer(q,b,bs){
   if(S.answered)return;S.answered=true;
   const ok=q[3].includes(b.dataset.k);
   if(ok)S.ok++;else S.miss.push(q);
-  bs.forEach(x=>{x.disabled=true;if(q[3].includes(x.dataset.k))x.classList.add('hit')});
+  bs.forEach(x=>{x.disabled=true;if(ok?x===b:q[3].includes(x.dataset.k))x.classList.add('hit')});
   document.querySelector('.count').innerHTML=(S.i+1)+' / '+S.list.length+'問　正解 <b>'+S.ok+'</b>';
   document.querySelector('.bar i').style.width=((S.i+1)/S.list.length*100)+'%';
   document.getElementById('fb').innerHTML='<div class="fb"><div class="v '+(ok?'ok':'ng')+'">'+
